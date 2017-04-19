@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.use(session({
-  secret: 'kelvinisthebest',
+  secret: process.env.APP_SECRET,
   resave: false,
   saveUninitialized: true,
 }));
