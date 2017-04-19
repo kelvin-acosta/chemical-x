@@ -3,12 +3,10 @@ const User = require('../models').User;
 
 module.exports = passport => {
   passport.serializeUser(function(user, done) {
-    console.log('serializing user: ' + user.id);
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
-    console.log('deserializing user: ' + id);
     User.findById(id).then(function(user) {
       done(null, user);
     });
@@ -44,16 +42,13 @@ module.exports = passport => {
     process.nextTick(function() {
       User.findOne({where: {'email': email}}).then(function(user) {
         if (user) {
-          console.log('email taken');
           return done(null, false, {message: 'That email is already taken.'});
         } else {
-          console.log('creating new user');
           User.create({
             name: req.body.name,
             email: email,
             password: User.generateHash(password),
           }).then(function(newUser) {
-            console.log('new user: ' + newUser.id);
             return done(null, newUser, {user: newUser});
           }).then(function(err) {
             return done(err);
